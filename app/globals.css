@@ -1,26 +1,391 @@
+/* ════════════════════════════════════════════════════════════
+   DAYLIGHT MINIMALIST — Design System
+   Kavio Studio · Anupam
+   Palette anchored to the daylight sky in the portrait photo
+════════════════════════════════════════════════════════════ */
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── DESIGN TOKENS registered with Tailwind v4 @theme ──────
+   Tailwind reads these and generates utility classes:
+   bg-bg, bg-surface, text-text, text-muted, text-faint,
+   text-accent, border-divider, etc.
+────────────────────────────────────────────────────────────── */
+@theme {
+  /* Surfaces */
+  --color-bg:          #F5F0E8;
+  --color-surface:     #EBE4D6;
+  --color-overlay:     rgba(245, 240, 232, 0.88);
+  --color-placeholder: #D7D0C3;
+
+  /* Typography */
+  --color-text:        #1B1915;
+  --color-muted:       #79736A;
+  --color-faint:       #B3ACA1;
+
+  /* Accent */
+  --color-accent:      #8CB4C8;
+  --color-accent-deep: #5A96B2;
+  --color-accent-tint: rgba(140, 180, 200, 0.13);
+
+  /* Structure */
+  --color-divider:     #DDD6C8;
+
+  /* Fonts — populated by next/font in layout.tsx */
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  --font-mono:  'Courier New', Courier, monospace;
+
+  /* Spacing / layout — available as spacing-page-pad etc. */
+  --spacing-header-h:   72px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── DARK MODE VARIANT ─────────────────────────────────────
+   v4: declare a custom variant instead of darkMode config.
+   Usage: dark:bg-surface, dark:text-text, etc.
+────────────────────────────────────────────────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Override tokens inside .dark — plain CSS cascade, no @theme needed */
+.dark {
+  --color-bg:          #131109;
+  --color-surface:     #1C1A10;
+  --color-overlay:     rgba(19, 17, 9, 0.92);
+  --color-placeholder: #1D1C10;
+
+  --color-text:        #EDE7D8;
+  --color-muted:       #877F6F;
+  --color-faint:       #44413A;
+
+  --color-accent:      #79AEC4;
+  --color-accent-deep: #9DCCE0;
+  --color-accent-tint: rgba(121, 174, 196, 0.11);
+
+  --color-divider:     #29261C;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── RESET ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  transition: background-color 0.32s ease, color 0.32s ease;
+}
+
+a { text-decoration: none; color: inherit; }
+button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
+img, video, iframe { display: block; }
+h1, h2, h3, h4 { font-weight: 400; }
+
+/* ── TYPE ATOMS ────────────────────────────────────────────── */
+/* v4: @utility replaces @layer components / @layer utilities  */
+@utility micro {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+@utility metric-num {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+/* ── HEADER ────────────────────────────────────────────────── */
+@utility site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 72px;                          /* --spacing-header-h */
+  padding: 0 clamp(24px, 5vw, 72px);    /* --page-pad */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-overlay);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--color-divider);
+  transition: background 0.3s ease;
+}
+
+/* ── NAV LINKS ─────────────────────────────────────────────── */
+@utility nav-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 1px; width: 0;
+    background: var(--color-accent);
+    transition: width 0.32s cubic-bezier(0.4, 0, 0, 1);
+  }
+
+  &:hover {
+    color: var(--color-text);
+    &::after { width: 100%; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── THEME TOGGLE ──────────────────────────────────────────── */
+@utility theme-toggle {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-muted);
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-accent-tint);
+  }
+}
+
+/* ── PRIMARY BUTTON — sweep fill ──────────────────────────── */
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  border: 1px solid currentColor;
+  padding: 14px 30px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.38s ease;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-text);
+    z-index: -1;
+    transform: translateX(-105%);
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0, 1);
+  }
+
+  &:hover {
+    color: var(--color-bg);
+    &::before { transform: translateX(0); }
+  }
+}
+
+/* ── ACCENT RULE ───────────────────────────────────────────── */
+@utility accent-rule {
+  width: 28px;
+  height: 1px;
+  background: var(--color-accent);
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+/* ── HERO LAYOUT ───────────────────────────────────────────── */
+@utility hero-layout {
+  display: grid;
+  grid-template-columns: 42% 1fr;
+  grid-template-rows: 1fr auto;
+  min-height: 100vh;
+  padding-top: 72px; /* --spacing-header-h */
+}
+
+@utility photo-panel {
+  grid-row: 1 / 3;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-placeholder);
+}
+
+@utility photo-frame {
+  position: absolute;
+  inset: 0;
+}
+
+@utility hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 72px) 32px clamp(40px, 4.5vw, 64px);
+}
+
+@utility hero-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 clamp(24px, 5vw, 72px) 40px clamp(40px, 4.5vw, 64px);
+}
+
+/* ── CASE STUDY GRIDS ──────────────────────────────────────── */
+@utility case-grid-odd {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+
+@utility case-grid-even {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+
+/* ── LOOM / VIDEO ──────────────────────────────────────────── */
+@utility video-wrapper {
+  position: relative;
+  padding-top: 62.5%;
+  background: var(--color-placeholder);
+  border-radius: 2px;
+  overflow: hidden;
+
+  & iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}
+
+@utility video-placeholder {
+  position: relative;
+  padding-top: 62.5%;
+  background: var(--color-placeholder);
+  border-radius: 2px;
+
+  & .placeholder-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@utility visit-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.22s ease;
+
+  &:hover { color: var(--color-accent-deep); }
+}
+
+/* ── METRICS STRIP ─────────────────────────────────────────── */
+@utility metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding-top: 28px;
+  border-top: 1px solid var(--color-divider);
+}
+
+/* ── CONTACT ───────────────────────────────────────────────── */
+@utility contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 7vw, 108px);
+  align-items: start;
+}
+
+@utility form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-divider);
+  padding: 14px 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--color-text);
+  outline: none;
+  resize: none;
+  -webkit-appearance: none;
+  transition: border-color 0.25s ease;
+
+  &::placeholder {
+    color: var(--color-faint);
+    font-style: italic;
+  }
+
+  &:focus { border-bottom-color: var(--color-accent); }
+}
+
+/* ── STRUCTURAL HELPERS ────────────────────────────────────── */
+@utility divider-top {
+  border-top: 1px solid var(--color-divider);
+}
+
+@utility footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+}
+
+/* ── ENTRY ANIMATIONS ──────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@utility fade-in {
+  animation: fadeInUp 0.72s ease both;
+  opacity: 0;
+}
+
+/* v4: functional variant utilities — fade-in-1 through fade-in-4 */
+@utility fade-in-* {
+  animation-delay: --value([ 0.05s | 0.18s | 0.34s | 0.52s ]);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .case-grid-odd,
+  .case-grid-even { grid-template-columns: 1fr; }
+
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 55vmax 1fr auto;
+  }
+  .photo-panel  { grid-row: 1; grid-column: 1; }
+  .hero-content { padding: 40px 24px 24px; }
+  .hero-meta    { padding: 0 24px 32px; }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    & > :last-child { justify-content: flex-start !important; }
+  }
 }
