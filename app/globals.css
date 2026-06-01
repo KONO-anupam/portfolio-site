@@ -1,52 +1,35 @@
 /* ════════════════════════════════════════════════════════════
    DAYLIGHT MINIMALIST — Design System
    Kavio Studio · Anupam
-   Palette anchored to the daylight sky in the portrait photo
 ════════════════════════════════════════════════════════════ */
 
 @import "tailwindcss";
 
-/* ── DESIGN TOKENS registered with Tailwind v4 @theme ──────
-   Tailwind reads these and generates utility classes:
-   bg-bg, bg-surface, text-text, text-muted, text-faint,
-   text-accent, border-divider, etc.
-────────────────────────────────────────────────────────────── */
 @theme {
-  /* Surfaces */
   --color-bg:          #F5F0E8;
   --color-surface:     #EBE4D6;
   --color-overlay:     rgba(245, 240, 232, 0.88);
   --color-placeholder: #D7D0C3;
 
-  /* Typography */
   --color-text:        #1B1915;
   --color-muted:       #79736A;
   --color-faint:       #B3ACA1;
 
-  /* Accent */
   --color-accent:      #8CB4C8;
   --color-accent-deep: #5A96B2;
   --color-accent-tint: rgba(140, 180, 200, 0.13);
 
-  /* Structure */
   --color-divider:     #DDD6C8;
 
-  /* Fonts — populated by next/font in layout.tsx */
   --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
   --font-sans:  var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
   --font-mono:  'Courier New', Courier, monospace;
 
-  /* Spacing / layout — available as spacing-page-pad etc. */
-  --spacing-header-h:   72px;
+  --spacing-header-h: 72px;
 }
 
-/* ── DARK MODE VARIANT ─────────────────────────────────────
-   v4: declare a custom variant instead of darkMode config.
-   Usage: dark:bg-surface, dark:text-text, etc.
-────────────────────────────────────────────────────────────── */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Override tokens inside .dark — plain CSS cascade, no @theme needed */
 .dark {
   --color-bg:          #131109;
   --color-surface:     #1C1A10;
@@ -64,7 +47,11 @@
   --color-divider:     #29261C;
 }
 
-/* ── RESET ─────────────────────────────────────────────────── */
+:root {
+  --page-pad:    clamp(20px, 6vw, 96px);
+  --section-gap: clamp(64px, 10vw, 140px);
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
@@ -84,8 +71,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; color: 
 img, video, iframe { display: block; }
 h1, h2, h3, h4 { font-weight: 400; }
 
-/* ── TYPE ATOMS ────────────────────────────────────────────── */
-/* v4: @utility replaces @layer components / @layer utilities  */
+/* ── TYPE ATOMS ── */
 @utility micro {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -96,20 +82,20 @@ h1, h2, h3, h4 { font-weight: 400; }
 
 @utility metric-num {
   font-family: var(--font-serif);
-  font-size: clamp(24px, 2.4vw, 32px);
+  font-size: clamp(22px, 2.4vw, 32px);
   font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--color-text);
   line-height: 1;
 }
 
-/* ── HEADER ────────────────────────────────────────────────── */
+/* ── HEADER ── */
 @utility site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  height: 72px;                          /* --spacing-header-h */
-  padding: 0 clamp(24px, 5vw, 72px);    /* --page-pad */
+  height: 64px;
+  padding: 0 clamp(20px, 5vw, 72px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -120,7 +106,7 @@ h1, h2, h3, h4 { font-weight: 400; }
   transition: background 0.3s ease;
 }
 
-/* ── NAV LINKS ─────────────────────────────────────────────── */
+/* ── NAV LINKS ── */
 @utility nav-link {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -146,7 +132,7 @@ h1, h2, h3, h4 { font-weight: 400; }
   }
 }
 
-/* ── THEME TOGGLE ──────────────────────────────────────────── */
+/* ── THEME TOGGLE ── */
 @utility theme-toggle {
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
@@ -160,41 +146,44 @@ h1, h2, h3, h4 { font-weight: 400; }
   }
 }
 
-/* ── PRIMARY BUTTON — sweep fill ──────────────────────────── */
-@utility btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text);
-  border: 1px solid currentColor;
-  padding: 14px 30px;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  transition: color 0.38s ease;
-  cursor: pointer;
+/* ── PRIMARY BUTTON ── */
+@layer utilities {
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 26px;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.38s ease;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--color-text);
-    z-index: -1;
-    transform: translateX(-105%);
-    transition: transform 0.38s cubic-bezier(0.4, 0, 0, 1);
-  }
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--color-text);
+      z-index: -1;
+      transform: translateX(-105%);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0, 1);
+    }
 
-  &:hover {
-    color: var(--color-bg);
-    &::before { transform: translateX(0); }
+    &:hover {
+      color: var(--color-bg) !important;
+      &::before { transform: translateX(0); }
+    }
   }
 }
 
-/* ── ACCENT RULE ───────────────────────────────────────────── */
+/* ── ACCENT RULE ── */
 @utility accent-rule {
   width: 28px;
   height: 1px;
@@ -203,42 +192,7 @@ h1, h2, h3, h4 { font-weight: 400; }
   flex-shrink: 0;
 }
 
-/* ── HERO LAYOUT ───────────────────────────────────────────── */
-@utility hero-layout {
-  display: grid;
-  grid-template-columns: 42% 1fr;
-  grid-template-rows: 1fr auto;
-  min-height: 100vh;
-  padding-top: 72px; /* --spacing-header-h */
-}
-
-@utility photo-panel {
-  grid-row: 1 / 3;
-  position: relative;
-  overflow: hidden;
-  background: var(--color-placeholder);
-}
-
-@utility photo-frame {
-  position: absolute;
-  inset: 0;
-}
-
-@utility hero-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 72px) 32px clamp(40px, 4.5vw, 64px);
-}
-
-@utility hero-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 0 clamp(24px, 5vw, 72px) 40px clamp(40px, 4.5vw, 64px);
-}
-
-/* ── CASE STUDY GRIDS ──────────────────────────────────────── */
+/* ── CASE STUDY GRIDS ── */
 @utility case-grid-odd {
   display: grid;
   grid-template-columns: 7fr 5fr;
@@ -253,7 +207,7 @@ h1, h2, h3, h4 { font-weight: 400; }
   align-items: start;
 }
 
-/* ── LOOM / VIDEO ──────────────────────────────────────────── */
+/* ── VIDEO ── */
 @utility video-wrapper {
   position: relative;
   padding-top: 62.5%;
@@ -299,16 +253,16 @@ h1, h2, h3, h4 { font-weight: 400; }
   &:hover { color: var(--color-accent-deep); }
 }
 
-/* ── METRICS STRIP ─────────────────────────────────────────── */
+/* ── METRICS STRIP ── */
 @utility metrics-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 20px;
   padding-top: 28px;
   border-top: 1px solid var(--color-divider);
 }
 
-/* ── CONTACT ───────────────────────────────────────────────── */
+/* ── CONTACT ── */
 @utility contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -339,7 +293,7 @@ h1, h2, h3, h4 { font-weight: 400; }
   &:focus { border-bottom-color: var(--color-accent); }
 }
 
-/* ── STRUCTURAL HELPERS ────────────────────────────────────── */
+/* ── STRUCTURAL HELPERS ── */
 @utility divider-top {
   border-top: 1px solid var(--color-divider);
 }
@@ -350,7 +304,14 @@ h1, h2, h3, h4 { font-weight: 400; }
   align-items: center;
 }
 
-/* ── ENTRY ANIMATIONS ──────────────────────────────────────── */
+/* ── MOBILE NAV DRAWER ── */
+@layer components {
+  .mobile-nav-open {
+    transform: translateX(0) !important;
+  }
+}
+
+/* ── ENTRY ANIMATIONS ── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -361,31 +322,74 @@ h1, h2, h3, h4 { font-weight: 400; }
   opacity: 0;
 }
 
-/* v4: functional variant utilities — fade-in-1 through fade-in-4 */
 @utility fade-in-* {
   animation-delay: --value([ 0.05s | 0.18s | 0.34s | 0.52s ]);
 }
 
-/* ── RESPONSIVE ────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .case-grid-odd,
-  .case-grid-even { grid-template-columns: 1fr; }
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════ */
 
-  .contact-grid { grid-template-columns: 1fr; }
+/* ── Tablet ── */
+@media (max-width: 960px) {
+  .case-grid-odd,
+  .case-grid-even {
+    grid-template-columns: 1fr;
+  }
+
+  /* Even cards: reorder so video always goes on top on mobile */
+  .case-grid-even > :last-child {
+    order: -1;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+
+  .metrics-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-@media (max-width: 768px) {
-  .hero-layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: 55vmax 1fr auto;
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  :root {
+    --page-pad: 20px;
+    --section-gap: 64px;
   }
-  .photo-panel  { grid-row: 1; grid-column: 1; }
-  .hero-content { padding: 40px 24px 24px; }
-  .hero-meta    { padding: 0 24px 32px; }
+
+  .site-header {
+    height: 60px;
+  }
+
+  /* Stack metrics on very small screens */
+  .metrics-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
 
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
-    & > :last-child { justify-content: flex-start !important; }
+    gap: 20px;
   }
+
+  .footer-grid > :last-child {
+    justify-content: flex-start !important;
+  }
+
+  /* Case card tighter on mobile */
+  .divider-top[style] {
+    padding-top: 40px !important;
+    padding-bottom: 56px !important;
+  }
+}
+
+/* ── RESPONSIVE VISIBILITY ── */
+@media (min-width: 641px) {
+  .visible-mobile { display: none !important; }
+}
+
+@media (max-width: 640px) {
+  .hidden-mobile { display: none !important; }
 }

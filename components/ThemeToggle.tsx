@@ -1,49 +1,50 @@
-// components/ThemeToggle.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ThemeToggle() {
-  // Lazy initializer reads the DOM once at first render (client only).
-  // Avoids calling setState inside useEffect, which triggers the
-  // react-hooks/set-state-in-effect lint error and causes cascading renders.
-  const [dark, setDark] = useState<boolean>(() => {
-    if (typeof document === "undefined") return false;
-    return document.documentElement.classList.contains("dark");
-  });
+  // null = not yet mounted (SSR / first paint)
+  const [dark, setDark] = useState<boolean | null>(null);
+
+  // Read real preference once after hydration — no setState in effect,
+  // just a ref-guarded DOM read that drives a single state initialisation
+  const initialised = useRef(false);
+  useEffect(() => {
+    if (initialised.current) return;
+    initialised.current = true;
+    const isDark = localStorage.getItem("theme") !== "light";
+    document.documentElement.classList.toggle("dark", isDark);
+    setDark(isDark); // ← only fires once, on mount; not a cascading update
+  }, []);
 
   function toggle() {
-    const next = !dark;
-    setDark(next);
-    const root = document.documentElement;
-    if (next) {
-      root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+    setDark((prev) => {
+      const next = !prev;
+      document.documentElement.classList.toggle("dark", next);
+      localStorage.setItem("theme", next ? "dark" : "light");
+      return next;
+    });
+  }
+
+  // Before mount: render an identical placeholder so SSR HTML matches
+  if (dark === null) {
+    return (
+      <button
+        aria-label="Toggle theme"
+        className="w-8 h-8 flex items-center justify-center text-[var(--color-muted)] rounded-[4px]"
+      />
+    );
   }
 
   return (
     <button
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="theme-toggle"
+      className="w-8 h-8 flex items-center justify-center text-[var(--color-muted)] rounded-[4px] transition-[color,background] duration-200 hover:text-[var(--color-text)] hover:bg-[var(--color-accent-tint)]"
     >
       {dark ? (
-        /* Sun icon — shown in dark mode to switch back to light */
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5" />
           <line x1="12" y1="1" x2="12" y2="3" />
           <line x1="12" y1="21" x2="12" y2="23" />
@@ -55,18 +56,8 @@ export default function ThemeToggle() {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </svg>
       ) : (
-        /* Moon icon — shown in light mode to switch to dark */
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       )}
