@@ -145,8 +145,19 @@ function LoomEmbed({
           />
         </div>
       )}
-      <div style={{ marginTop: "14px", display: "flex", justifyContent: "flex-end" }}>
-        <a href={siteUrl} target="_blank" rel="noopener noreferrer" className="visit-link">
+      <div
+        style={{
+          marginTop: "14px",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <a
+          href={siteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="visit-link"
+        >
           {siteLabel} ↗
         </a>
       </div>
@@ -158,13 +169,24 @@ function LoomEmbed({
 // METRICS STRIP
 // ─────────────────────────────────────────────────────────────
 
-function MetricsStrip({ metrics }: { metrics: { value: string; label: string }[] }) {
+function MetricsStrip({
+  metrics,
+}: {
+  metrics: { value: string; label: string }[];
+}) {
   return (
     <div className="metrics-strip">
       {metrics.map((m) => (
         <div key={m.label}>
           <p className="metric-num">{m.value}</p>
-          <Micro style={{ color: "var(--color-muted)", display: "block", marginTop: "10px", lineHeight: 1.5 }}>
+          <Micro
+            style={{
+              color: "var(--color-muted)",
+              display: "block",
+              marginTop: "10px",
+              lineHeight: 1.5,
+            }}
+          >
             {m.label}
           </Micro>
         </div>
@@ -180,10 +202,22 @@ function MetricsStrip({ metrics }: { metrics: { value: string; label: string }[]
 function CaseText({ study }: { study: (typeof caseStudies)[0] }) {
   return (
     <div>
-      <Micro style={{ color: "var(--color-accent)", display: "block", marginBottom: "18px" }}>
+      <Micro
+        style={{
+          color: "var(--color-accent)",
+          display: "block",
+          marginBottom: "18px",
+        }}
+      >
         {study.index}
       </Micro>
-      <Micro style={{ color: "var(--color-muted)", display: "block", marginBottom: "16px" }}>
+      <Micro
+        style={{
+          color: "var(--color-muted)",
+          display: "block",
+          marginBottom: "16px",
+        }}
+      >
         {study.category}
       </Micro>
       <h3
@@ -232,10 +266,17 @@ function CaseText({ study }: { study: (typeof caseStudies)[0] }) {
 
 function CaseCardOdd({ study }: { study: (typeof caseStudies)[0] }) {
   return (
-    <article className="divider-top" style={{ paddingTop: "56px", paddingBottom: "88px" }}>
+    <article
+      className="divider-top"
+      style={{ paddingTop: "56px", paddingBottom: "88px" }}
+    >
       <div className="case-grid-odd">
         <div>
-          <LoomEmbed loomId={study.loomId} siteUrl={study.siteUrl} siteLabel={study.siteLabel} />
+          <LoomEmbed
+            loomId={study.loomId}
+            siteUrl={study.siteUrl}
+            siteLabel={study.siteLabel}
+          />
         </div>
         <CaseText study={study} />
       </div>
@@ -245,11 +286,18 @@ function CaseCardOdd({ study }: { study: (typeof caseStudies)[0] }) {
 
 function CaseCardEven({ study }: { study: (typeof caseStudies)[0] }) {
   return (
-    <article className="divider-top" style={{ paddingTop: "56px", paddingBottom: "88px" }}>
+    <article
+      className="divider-top"
+      style={{ paddingTop: "56px", paddingBottom: "88px" }}
+    >
       <div className="case-grid-even">
         <CaseText study={study} />
         <div>
-          <LoomEmbed loomId={study.loomId} siteUrl={study.siteUrl} siteLabel={study.siteLabel} />
+          <LoomEmbed
+            loomId={study.loomId}
+            siteUrl={study.siteUrl}
+            siteLabel={study.siteLabel}
+          />
         </div>
       </div>
     </article>
@@ -270,21 +318,28 @@ export default function Home() {
   return (
     <>
       {/* ══ HEADER ══════════════════════════════════════════ */}
-<header className="site-header" style={{ paddingInline: "clamp(16px, 4vw, 48px)" }}>        <Micro style={{ color: "var(--color-text)", letterSpacing: "0.18em" }}>
+      <header
+        className="site-header"
+        style={{ paddingInline: "clamp(16px, 4vw, 48px)" }}
+      >
+        {" "}
+        <Micro style={{ color: "var(--color-text)", letterSpacing: "0.18em" }}>
           [kono Studio]
         </Micro>
-
         {/* Desktop nav */}
         <nav
           style={{ display: "flex", alignItems: "center", gap: "32px" }}
           aria-label="Primary navigation"
           className="hidden-mobile"
         >
-          <a href="#work" className="nav-link">Work</a>
-          <a href="#contact" className="nav-link">Contact</a>
+          <a href="#work" className="nav-link">
+            Work
+          </a>
+          <a href="#contact" className="nav-link">
+            Contact
+          </a>
           <ThemeToggle />
         </nav>
-
         {/* Mobile nav controls */}
         <div
           style={{ display: "flex", alignItems: "center", gap: "16px" }}
@@ -308,7 +363,6 @@ export default function Home() {
             <HamburgerIcon open={menuOpen} />
           </button>
         </div>
-
         {/* Mobile drawer */}
         <div
           aria-hidden={!menuOpen}
@@ -327,7 +381,8 @@ export default function Home() {
             gap: "28px",
             overflow: "hidden",
             maxHeight: menuOpen ? "200px" : "0",
-            transition: "max-height 0.36s cubic-bezier(0.4,0,0,1), padding 0.36s ease",
+            transition:
+              "max-height 0.36s cubic-bezier(0.4,0,0,1), padding 0.36s ease",
             zIndex: 99,
           }}
           className="visible-mobile"
@@ -359,13 +414,19 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            padding: "calc(64px + clamp(36px, 8vw, 96px)) clamp(20px, 7vw, 120px) 60px",
+            padding:
+              "calc(64px + clamp(36px, 8vw, 96px)) clamp(20px, 7vw, 120px) 60px",
           }}
         >
           {/* Identity row */}
           <div
             className="fade-in fade-in-1"
-            style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "48px" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "16px",
+              marginBottom: "48px",
+            }}
           >
             <div
               style={{
@@ -387,11 +448,17 @@ export default function Home() {
               />
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-              <Micro style={{ color: "var(--color-text)", letterSpacing: "0.14em" }}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "7px" }}
+            >
+              <Micro
+                style={{ color: "var(--color-text)", letterSpacing: "0.14em" }}
+              >
                 Anupam
               </Micro>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <span
                   style={{
                     display: "inline-block",
@@ -448,7 +515,7 @@ export default function Home() {
               letterSpacing: "0.01em",
             }}
           >
-            Invoicing, lead management, booking, onboarding I turn the
+            Invoicing, lead management, booking, and onboarding. I turn the
             repetitive ops work that eats your week into software that runs
             without you.
           </p>
@@ -456,7 +523,12 @@ export default function Home() {
           {/* CTA row */}
           <div
             className="fade-in fade-in-4"
-            style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "24px",
+              flexWrap: "wrap",
+            }}
           >
             <CalendlyCTA />
             <a
@@ -469,8 +541,12 @@ export default function Home() {
                 color: "var(--color-muted)",
                 transition: "color 0.2s ease",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-text)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--color-text)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--color-muted)")
+              }
             >
               See the work ↓
             </a>
@@ -488,7 +564,13 @@ export default function Home() {
               borderTop: "1px solid var(--color-divider)",
             }}
           >
-            {["Next.js", "Razorpay", "Webhooks", "Email Automation", "Custom CRMs", "Booking Systems"].map((tag) => (
+            {[
+              "AUTOMATED INVOICING",
+              "CUSTOM CRMS",
+              "CLIENT ONBOARDING",
+              "PAYMENT RECOVERY",
+              "BOOKING SYSTEMS",
+            ].map((tag) => (
               <span
                 key={tag}
                 style={{
@@ -509,9 +591,18 @@ export default function Home() {
         </section>
 
         {/* ══ WORK ════════════════════════════════════════════ */}
-        <section id="work" style={{ padding: `var(--section-gap) var(--page-pad)` }}>
+        <section
+          id="work"
+          style={{ padding: `var(--section-gap) var(--page-pad)` }}
+        >
           <div style={{ marginBottom: "64px" }}>
-            <Micro style={{ color: "var(--color-muted)", display: "block", marginBottom: "20px" }}>
+            <Micro
+              style={{
+                color: "var(--color-muted)",
+                display: "block",
+                marginBottom: "20px",
+              }}
+            >
               Selected Work
             </Micro>
             <h2
@@ -537,8 +628,8 @@ export default function Home() {
                 letterSpacing: "0.01em",
               }}
             >
-              Three self-initiated projects, each solving a real operational
-              problem I kept seeing small businesses struggle with.
+              Proprietary systems engineered by Kono Studio to solve the most
+              common operational bottlenecks in creative agencies.
             </p>
           </div>
 
@@ -547,7 +638,7 @@ export default function Home() {
               <CaseCardOdd key={study.index} study={study} />
             ) : (
               <CaseCardEven key={study.index} study={study} />
-            )
+            ),
           )}
         </section>
 
@@ -559,7 +650,13 @@ export default function Home() {
         >
           <div className="contact-grid">
             <div>
-              <Micro style={{ color: "var(--color-muted)", display: "block", marginBottom: "24px" }}>
+              <Micro
+                style={{
+                  color: "var(--color-muted)",
+                  display: "block",
+                  marginBottom: "24px",
+                }}
+              >
                 Work With Me
               </Micro>
               <h2
@@ -590,14 +687,22 @@ export default function Home() {
                 honest take on whether I can automate it — and roughly what that
                 would look like. No pitch, no proposal, just a straight answer.
               </p>
-              <ul style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <ul
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                }}
+              >
                 {[
                   "Free 30-min scoping call",
                   "Fixed-scope, fixed-price projects",
                   "No retainers or lock-ins",
                 ].map((item) => (
                   <li key={item}>
-                    <Micro style={{ color: "var(--color-muted)" }}>→ {item}</Micro>
+                    <Micro style={{ color: "var(--color-muted)" }}>
+                      → {item}
+                    </Micro>
                   </li>
                 ))}
               </ul>
@@ -610,7 +715,10 @@ export default function Home() {
       </main>
 
       {/* ══ FOOTER ══════════════════════════════════════════ */}
-      <footer className="divider-top" style={{ padding: `28px var(--page-pad)` }}>
+      <footer
+        className="divider-top"
+        style={{ padding: `28px var(--page-pad)` }}
+      >
         <div className="footer-grid">
           <div>
             <Micro style={{ color: "var(--color-muted)" }}>
@@ -622,8 +730,15 @@ export default function Home() {
               © {new Date().getFullYear()} All Rights Reserved
             </Micro>
           </div>
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: "24px" }}>
-            <a href="https://linkedin.com/in/YOURPROFILE" target="_blank" rel="noopener noreferrer" className="nav-link">
+          <div
+            style={{ display: "flex", justifyContent: "flex-end", gap: "24px" }}
+          >
+            <a
+              href="https://linkedin.com/in/YOURPROFILE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-link"
+            >
               LinkedIn ↗
             </a>
             <a href="mailto:YOUR@EMAIL.COM" className="nav-link">
