@@ -1,32 +1,29 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 
 export default function ThemeToggle() {
-  // null = not yet mounted (SSR / first paint)
   const [dark, setDark] = useState<boolean | null>(null);
-
-  // Read real preference once after hydration — no setState in effect,
-  // just a ref-guarded DOM read that drives a single state initialisation
   const initialised = useRef(false);
+
   useEffect(() => {
     if (initialised.current) return;
     initialised.current = true;
-    const isDark = localStorage.getItem("theme") !== "dark";
-    document.documentElement.classList.toggle("light", isDark);
-    setDark(isDark); // ← only fires once, on mount; not a cascading update
+    // Check saved preference, default to light if nothing saved
+    const saved = localStorage.getItem("theme");
+    const isDark = saved === "dark";
+    document.documentElement.classList.toggle("dark", isDark);
+    setDark(isDark);
   }, []);
 
   function toggle() {
     setDark((prev) => {
       const next = !prev;
-      document.documentElement.classList.toggle("light", next);
+      document.documentElement.classList.toggle("dark", next);
       localStorage.setItem("theme", next ? "dark" : "light");
       return next;
     });
   }
 
-  // Before mount: render an identical placeholder so SSR HTML matches
   if (dark === null) {
     return (
       <button
@@ -43,6 +40,7 @@ export default function ThemeToggle() {
       className="w-8 h-8 flex items-center justify-center text-[var(--color-muted)] rounded-[4px] transition-[color,background] duration-200 hover:text-[var(--color-text)] hover:bg-[var(--color-accent-tint)]"
     >
       {dark ? (
+        // Sun icon — currently dark, click to go light
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5" />
@@ -56,6 +54,7 @@ export default function ThemeToggle() {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </svg>
       ) : (
+        // Moon icon — currently light, click to go dark
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />

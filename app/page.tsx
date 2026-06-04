@@ -12,39 +12,41 @@ import CalendlyCTA from "@/components/CalendlyCTA";
 const caseStudies = [
   {
     index: "01",
-    year: "2023",
+    year: "2026",
     category: "Invoicing & Cash Flow",
     headline: "SmartBill",
     subheadline: "Automated Payment Recovery",
-    copy: "Built to stop the manual invoice chase. SmartBill generates invoices in under 60 seconds, processes payments via Razorpay, and automatically escalates overdue invoices through a multi-stage email sequence — so cash comes in without anyone lifting a finger.",
+    copy: "Built to stop the manual invoice chase. SmartBill generates invoices in under 60 seconds, processes payments via Razorpay, and automatically escalates overdue invoices through a multi-stage email sequence so cash comes in without anyone lifting a finger.",
     metrics: [
       { value: "< 60s", label: "Invoice Generated" },
       { value: "3-Stage", label: "Automated Follow-Up" },
       { value: "Zero", label: "Manual Chasing Required" },
     ],
-    loomId: "REPLACE_WITH_YOUR_LOOM_ID",
-    siteUrl: "https://smartbill.vercel.app",
+    screenshot: "/smartbill.png",
+    siteUrl: "https://smart-bill-dusky.vercel.app/",
     siteLabel: "View SmartBill",
+    isLive: true,
   },
   {
     index: "02",
-    year: "2024",
+    year: "2026",
     category: "Lead Management",
     headline: "Kavio CRM",
     subheadline: "High-Ticket Lead Tracking",
-    copy: "A lightweight CRM built for small agencies that lose leads to admin chaos. Every inbound enquiry is captured via webhook, routed to the right person, and synced to Google Calendar — so no high-value lead goes cold because someone forgot to follow up.",
+    copy: "A lightweight CRM built for small agencies that lose leads to admin chaos. Every inbound enquiry is captured via webhook, routed to the right person, and synced to Google Calendar so no high-value lead goes cold because someone forgot to follow up.",
     metrics: [
       { value: "Instant", label: "Lead Capture via Webhook" },
       { value: "Auto", label: "Google Calendar Sync" },
       { value: "Zero", label: "Leads Lost to Admin" },
     ],
-    loomId: "REPLACE_WITH_YOUR_LOOM_ID",
-    siteUrl: "#",
+    screenshot: "/kavio.png",
+    siteUrl: "https://kavio-amber.vercel.app/",
     siteLabel: "View Kavio CRM",
+    isLive: true,
   },
   {
     index: "03",
-    year: "2024",
+    year: "2026",
     category: "Booking & Onboarding",
     headline: "The Ground",
     subheadline: "Custom Booking Engine",
@@ -54,9 +56,10 @@ const caseStudies = [
       { value: "Zero", label: "Double-Booking Risk" },
       { value: "Custom", label: "No Generic SaaS Limits" },
     ],
-    loomId: "REPLACE_WITH_YOUR_LOOM_ID",
+    screenshot: "/the-ground.png",
     siteUrl: "https://the-ground-alpha.vercel.app",
     siteLabel: "Visit The Ground",
+    isLive: true,
   },
 ];
 
@@ -113,38 +116,109 @@ function HamburgerIcon({ open }: { open: boolean }) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// LOOM EMBED
+// PROJECT SHOWCASE
 // ─────────────────────────────────────────────────────────────
 
-function LoomEmbed({
-  loomId,
+function ProjectShowcase({
+  screenshot,
   siteUrl,
   siteLabel = "Visit live site",
+  isLive,
 }: {
-  loomId: string;
+  screenshot: string;
   siteUrl: string;
   siteLabel?: string;
+  isLive: boolean;
 }) {
-  const isPlaceholder = !loomId || loomId.startsWith("REPLACE");
+  const [hovered, setHovered] = useState(false);
 
   return (
     <div>
-      {isPlaceholder ? (
-        <div className="video-placeholder">
-          <div className="placeholder-label">
-            <Micro style={{ color: "var(--color-muted)" }}>[ Loom Demo ]</Micro>
+      {/* Screenshot container */}
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          borderRadius: "4px",
+          overflow: "hidden",
+          border: "1px solid var(--color-divider)",
+          background: "var(--color-surface, #f0ede8)",
+          cursor: isLive ? "pointer" : "default",
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={() => isLive && window.open(siteUrl, "_blank")}
+      >
+        <Image
+          src={screenshot}
+          alt={`${siteLabel} screenshot`}
+          width={1600}
+          height={900}
+          style={{
+            width: "100%",
+            height: "auto",
+            display: "block",
+            transition: "transform 0.6s cubic-bezier(0.4,0,0,1)",
+            transform: hovered && isLive ? "scale(1.03)" : "scale(1)",
+          }}
+        />
+
+        {/* Live hover overlay */}
+        {isLive && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "rgba(0,0,0,0.45)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              opacity: hovered ? 1 : 0,
+              transition: "opacity 0.3s ease",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "#fff",
+                border: "1px solid rgba(255,255,255,0.5)",
+                padding: "10px 20px",
+                borderRadius: "2px",
+              }}
+            >
+              Open Live Site ↗
+            </span>
           </div>
-        </div>
-      ) : (
-        <div className="video-wrapper">
-          <iframe
-            src={`https://www.loom.com/embed/${loomId}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
-            title="Project walkthrough"
-            allowFullScreen
-            style={{ border: "none" }}
-          />
-        </div>
-      )}
+        )}
+
+        {/* Private badge for non-live */}
+        {!isLive && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "12px",
+              right: "12px",
+              fontFamily: "var(--font-mono)",
+              fontSize: "9px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "var(--color-faint)",
+              border: "1px solid var(--color-divider)",
+              padding: "4px 8px",
+              borderRadius: "2px",
+              background: "var(--color-overlay)",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            Private Client Build
+          </div>
+        )}
+      </div>
+
+      {/* Link row */}
       <div
         style={{
           marginTop: "14px",
@@ -152,14 +226,20 @@ function LoomEmbed({
           justifyContent: "flex-end",
         }}
       >
-        <a
-          href={siteUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="visit-link"
-        >
-          {siteLabel} ↗
-        </a>
+        {isLive ? (
+          <a
+            href={siteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="visit-link"
+          >
+            {siteLabel} ↗
+          </a>
+        ) : (
+          <Micro style={{ color: "var(--color-faint)" }}>
+            NDA · Not publicly available
+          </Micro>
+        )}
       </div>
     </div>
   );
@@ -272,10 +352,11 @@ function CaseCardOdd({ study }: { study: (typeof caseStudies)[0] }) {
     >
       <div className="case-grid-odd">
         <div>
-          <LoomEmbed
-            loomId={study.loomId}
+          <ProjectShowcase
+            screenshot={study.screenshot}
             siteUrl={study.siteUrl}
             siteLabel={study.siteLabel}
+            isLive={study.isLive}
           />
         </div>
         <CaseText study={study} />
@@ -293,10 +374,11 @@ function CaseCardEven({ study }: { study: (typeof caseStudies)[0] }) {
       <div className="case-grid-even">
         <CaseText study={study} />
         <div>
-          <LoomEmbed
-            loomId={study.loomId}
+          <ProjectShowcase
+            screenshot={study.screenshot}
             siteUrl={study.siteUrl}
             siteLabel={study.siteLabel}
+            isLive={study.isLive}
           />
         </div>
       </div>
@@ -322,10 +404,10 @@ export default function Home() {
         className="site-header"
         style={{ paddingInline: "clamp(16px, 4vw, 48px)" }}
       >
-        {" "}
         <Micro style={{ color: "var(--color-text)", letterSpacing: "0.18em" }}>
           [kono Studio]
         </Micro>
+
         {/* Desktop nav */}
         <nav
           style={{ display: "flex", alignItems: "center", gap: "32px" }}
@@ -340,6 +422,7 @@ export default function Home() {
           </a>
           <ThemeToggle />
         </nav>
+
         {/* Mobile nav controls */}
         <div
           style={{ display: "flex", alignItems: "center", gap: "16px" }}
@@ -363,6 +446,7 @@ export default function Home() {
             <HamburgerIcon open={menuOpen} />
           </button>
         </div>
+
         {/* Mobile drawer */}
         <div
           aria-hidden={!menuOpen}
@@ -396,6 +480,7 @@ export default function Home() {
             Work
           </a>
           <a
+            href="#contact"
             className="nav-link"
             onClick={closeMenu}
             style={{ fontSize: "12px", letterSpacing: "0.14em" }}
@@ -420,7 +505,6 @@ export default function Home() {
         >
           {/* Identity row */}
           <div
-            className="fade-in fade-in-1"
             style={{
               display: "flex",
               alignItems: "center",
@@ -477,11 +561,10 @@ export default function Home() {
           </div>
 
           {/* Accent rule */}
-          <div className="accent-rule fade-in fade-in-1" />
+          <div className="accent-rule" />
 
           {/* Headline */}
           <h1
-            className="fade-in fade-in-2"
             style={{
               fontFamily: "var(--font-serif)",
               fontSize: "clamp(36px, 5.5vw, 78px)",
@@ -503,7 +586,6 @@ export default function Home() {
 
           {/* Sub */}
           <p
-            className="fade-in fade-in-3"
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "clamp(15px, 1.8vw, 17px)",
@@ -522,7 +604,6 @@ export default function Home() {
 
           {/* CTA row */}
           <div
-            className="fade-in fade-in-4"
             style={{
               display: "flex",
               alignItems: "center",
@@ -541,10 +622,10 @@ export default function Home() {
                 color: "var(--color-muted)",
                 transition: "color 0.2s ease",
               }}
-              onMouseEnter={(e) =>
+              onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) =>
                 (e.currentTarget.style.color = "var(--color-text)")
               }
-              onMouseLeave={(e) =>
+              onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) =>
                 (e.currentTarget.style.color = "var(--color-muted)")
               }
             >
@@ -554,7 +635,6 @@ export default function Home() {
 
           {/* Stack tags */}
           <div
-            className="fade-in fade-in-4"
             style={{
               display: "flex",
               gap: "8px",
@@ -684,7 +764,7 @@ export default function Home() {
                 }}
               >
                 Tell me what it is. I&apos;ll reply within 24 hours with an
-                honest take on whether I can automate it — and roughly what that
+                honest take on whether I can automate it and roughly what that
                 would look like. No pitch, no proposal, just a straight answer.
               </p>
               <ul
@@ -731,7 +811,11 @@ export default function Home() {
             </Micro>
           </div>
           <div
-            style={{ display: "flex", justifyContent: "flex-end", gap: "24px" }}
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "24px",
+            }}
           >
             <a
               href="https://linkedin.com/in/YOURPROFILE"
