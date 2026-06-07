@@ -647,8 +647,10 @@ export default function Home() {
               "AUTOMATED INVOICING",
               "CUSTOM DATABASES",
               "CLIENT PORTALS",
-              "PAYMENT INTEGRATIONS",
+              "API INTEGRATIONS",
               "BOOKING SYSTEMS",
+              "CUSTOM DASHBOARDS",
+              "SAAS MVPS"
             ].map((tag) => (
               <span
                 key={tag}
