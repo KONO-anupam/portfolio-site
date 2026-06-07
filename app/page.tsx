@@ -13,14 +13,14 @@ const caseStudies = [
   {
     index: "01",
     year: "2026",
-    category: "Invoicing & Cash Flow",
+    category: "Invoicing & Payments",
     headline: "SmartBill",
-    subheadline: "Automated Payment Recovery",
-    copy: "Built to stop the manual invoice chase. SmartBill generates invoices in under 60 seconds, processes payments via Razorpay, and automatically escalates overdue invoices through a multi-stage email sequence so cash comes in without anyone lifting a finger.",
+    subheadline: "Full-Stack Invoicing App",
+    copy: "A full-stack invoicing app with a PostgreSQL database tracking every invoice state: draft, sent, paid, overdue. Payments go through Razorpay. When a payment clears, the database updates instantly. When it doesn't, the follow-up triggers automatically. The data flow is clean, the transactions are secure, and nothing falls through the cracks.",
     metrics: [
       { value: "< 60s", label: "Invoice Generated" },
-      { value: "3-Stage", label: "Automated Follow-Up" },
-      { value: "Zero", label: "Manual Chasing Required" },
+      { value: "PostgreSQL", label: "Invoice State Tracking" },
+      { value: "Razorpay", label: "Payment Gateway" },
     ],
     screenshot: "/smartbill.png",
     siteUrl: "https://smart-bill-dusky.vercel.app/",
@@ -32,12 +32,12 @@ const caseStudies = [
     year: "2026",
     category: "Lead Management",
     headline: "Kavio CRM",
-    subheadline: "High-Ticket Lead Tracking",
-    copy: "A lightweight CRM built for small agencies that lose leads to admin chaos. Every inbound enquiry is captured via webhook, routed to the right person, and synced to Google Calendar so no high-value lead goes cold because someone forgot to follow up.",
+    subheadline: "Database-Backed Lead Tracker",
+    copy: "A relational database web app built for agencies managing high-ticket leads. Every lead is a real record with structured fields, status history, and assignee data. Queries are fast. The interface is built on top of that data, so what you see is always accurate. Webhook intake writes directly to the database. Google Calendar sync pulls from it.",
     metrics: [
-      { value: "Instant", label: "Lead Capture via Webhook" },
+      { value: "Relational", label: "Database Architecture" },
+      { value: "Webhook", label: "Real-Time Lead Intake" },
       { value: "Auto", label: "Google Calendar Sync" },
-      { value: "Zero", label: "Leads Lost to Admin" },
     ],
     screenshot: "/kavio.png",
     siteUrl: "https://kavio-amber.vercel.app/",
@@ -50,11 +50,11 @@ const caseStudies = [
     category: "Booking & Onboarding",
     headline: "The Ground",
     subheadline: "Custom Booking Engine",
-    copy: "A bespoke scheduling system built from scratch — no third-party booking tools, no double-booking, no friction. Clients book, pay, and complete intake questionnaires in one flow. The business owner sees everything in a single dashboard.",
+    copy: "A React frontend talking to a backend API. When a client picks a time slot, the API checks that slot against the database before confirming. No double-booking is possible because the check happens at the data layer, not the UI. Once booked, the Google Calendar API syncs the appointment. Payment and intake happen in the same flow.",
     metrics: [
-      { value: "1-Flow", label: "Book → Pay → Onboard" },
+      { value: "API-First", label: "Slot Availability Check" },
       { value: "Zero", label: "Double-Booking Risk" },
-      { value: "Custom", label: "No Generic SaaS Limits" },
+      { value: "Google Cal", label: "API Sync on Confirm" },
     ],
     screenshot: "/the-ground.png",
     siteUrl: "https://the-ground-alpha.vercel.app",
@@ -576,11 +576,11 @@ export default function Home() {
               maxWidth: "820px",
             }}
           >
-            I build the systems
+            I build custom web applications
             <br />
-            your business runs on{" "}
+            and database systems that{" "}
             <em style={{ color: "var(--color-muted)", fontStyle: "italic" }}>
-              automatically.
+              run your business.
             </em>
           </h1>
 
@@ -597,9 +597,8 @@ export default function Home() {
               letterSpacing: "0.01em",
             }}
           >
-            Invoicing, lead management, booking, and onboarding. I turn the
-            repetitive ops work that eats your week into software that runs
-            without you.
+            Client portals, booking engines, payment integrations. Fast, secure
+            full-stack tools built exactly around how your business works.
           </p>
 
           {/* CTA row */}
@@ -646,9 +645,9 @@ export default function Home() {
           >
             {[
               "AUTOMATED INVOICING",
-              "CUSTOM CRMS",
-              "CLIENT ONBOARDING",
-              "PAYMENT RECOVERY",
+              "CUSTOM DATABASES",
+              "CLIENT PORTALS",
+              "PAYMENT INTEGRATIONS",
               "BOOKING SYSTEMS",
             ].map((tag) => (
               <span
@@ -708,8 +707,8 @@ export default function Home() {
                 letterSpacing: "0.01em",
               }}
             >
-              Proprietary systems engineered by Kono Studio to solve the most
-              common operational bottlenecks in creative agencies.
+              Full-stack apps and database tools built for real businesses with
+              specific problems. No templates, no off-the-shelf limits.
             </p>
           </div>
 
@@ -750,7 +749,7 @@ export default function Home() {
                   color: "var(--color-text)",
                 }}
               >
-                Got a process that wastes your time every week?
+                Got something you want to build?
               </h2>
               <p
                 style={{
@@ -763,9 +762,9 @@ export default function Home() {
                   marginBottom: "40px",
                 }}
               >
-                Tell me what it is. I&apos;ll reply within 24 hours with an
-                honest take on whether I can automate it and roughly what that
-                would look like. No pitch, no proposal, just a straight answer.
+                Tell me what you need. I&apos;ll reply within 24 hours with an
+                honest take on how I&apos;d build it and roughly what it would
+                take. No pitch, no proposal. Just a straight answer.
               </p>
               <ul
                 style={{
@@ -802,7 +801,7 @@ export default function Home() {
         <div className="footer-grid">
           <div>
             <Micro style={{ color: "var(--color-muted)" }}>
-              Anupam — Systems Developer
+              Anupam — Full-Stack Developer
             </Micro>
           </div>
           <div style={{ textAlign: "center" }}>
@@ -818,15 +817,20 @@ export default function Home() {
             }}
           >
             <a
-              href="https://linkedin.com/in/YOURPROFILE"
+              href="https://linkedin.com/in/ananya-anupam-50176734a/"
               target="_blank"
               rel="noopener noreferrer"
               className="nav-link"
             >
               LinkedIn ↗
             </a>
-            <a href="mailto:YOUR@EMAIL.COM" className="nav-link">
-              Email ↗
+            <a
+              href="https://x.com/anupamkunu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-link"
+            >
+              Twitter ↗
             </a>
           </div>
         </div>

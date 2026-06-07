@@ -40,7 +40,6 @@ export default function ContactForm() {
         >
           Thank you. You&apos;ll hear from{" "}
           <span style={{ color: "var(--color-accent)" }}>[Anupam]</span>{" "}
-          {/* TODO: Replace [Anupam] */}
           within 24 hours.
         </p>
       </div>
@@ -77,7 +76,7 @@ export default function ContactForm() {
             name="message"
             id="message"
             rows={4}
-            placeholder="What is the biggest operational bottleneck in your business right now?"
+            placeholder="What custom app, feature, or database tool do you want to build?"
             required
             className="form-input"
           />
