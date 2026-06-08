@@ -16,11 +16,11 @@ const caseStudies = [
     category: "Invoicing & Payments",
     headline: "SmartBill",
     subheadline: "Full-Stack Invoicing App",
-    copy: "A full-stack invoicing app with a PostgreSQL database tracking every invoice state: draft, sent, paid, overdue. Payments go through Razorpay. When a payment clears, the database updates instantly. When it doesn't, the follow-up triggers automatically. The data flow is clean, the transactions are secure, and nothing falls through the cracks.",
+    copy: "A full-stack invoicing app with a PostgreSQL database tracking every invoice state: draft, sent, paid, overdue. Payments go through Razorpay. When a client pays, the database updates and the freelancer gets an automatic confirmation email via Resend. Invoices are generated in under 60 seconds.",
     metrics: [
       { value: "< 60s", label: "Invoice Generated" },
-      { value: "PostgreSQL", label: "Invoice State Tracking" },
       { value: "Razorpay", label: "Payment Gateway" },
+      { value: "Resend", label: "Auto Email on Payment" },
     ],
     screenshot: "/smartbill.png",
     siteUrl: "https://smart-bill-dusky.vercel.app/",
@@ -33,7 +33,7 @@ const caseStudies = [
     category: "Lead Management",
     headline: "Kavio CRM",
     subheadline: "Database-Backed Lead Tracker",
-    copy: "A relational database web app built for agencies managing high-ticket leads. Every lead is a real record with structured fields, status history, and assignee data. Queries are fast. The interface is built on top of that data, so what you see is always accurate. Webhook intake writes directly to the database. Google Calendar sync pulls from it.",
+    copy: "A relational database web app for agencies tracking high-ticket leads. Every lead is a structured record with status history and assignee data. Webhook intake writes directly to the database. The interface queries it in real time, so what you see is always current.",
     metrics: [
       { value: "Relational", label: "Database Architecture" },
       { value: "Webhook", label: "Real-Time Lead Intake" },
@@ -50,11 +50,11 @@ const caseStudies = [
     category: "Booking & Onboarding",
     headline: "The Ground",
     subheadline: "Custom Booking Engine",
-    copy: "A React frontend talking to a backend API. When a client picks a time slot, the API checks that slot against the database before confirming. No double-booking is possible because the check happens at the data layer, not the UI. Once booked, the Google Calendar API syncs the appointment. Payment and intake happen in the same flow.",
+    copy: "A Next.js app with a backend API handling slot availability. When a client picks a time, the API checks the database before confirming the booking. Double-booking is prevented at the data layer. Payment and client intake happen in the same flow, no redirects.",
     metrics: [
+      { value: "Next.js", label: "Frontend Framework" },
       { value: "API-First", label: "Slot Availability Check" },
       { value: "Zero", label: "Double-Booking Risk" },
-      { value: "Google Cal", label: "API Sync on Confirm" },
     ],
     screenshot: "/the-ground.png",
     siteUrl: "https://the-ground-alpha.vercel.app",
@@ -647,10 +647,8 @@ export default function Home() {
               "AUTOMATED INVOICING",
               "CUSTOM DATABASES",
               "CLIENT PORTALS",
-              "API INTEGRATIONS",
+              "PAYMENT INTEGRATIONS",
               "BOOKING SYSTEMS",
-              "CUSTOM DASHBOARDS",
-              "SAAS MVPS"
             ].map((tag) => (
               <span
                 key={tag}
